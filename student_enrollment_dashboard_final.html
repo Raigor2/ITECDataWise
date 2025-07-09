@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment Demographics Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card.trend-up {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        
+        .stat-card.trend-down {
+            background: linear-gradient(135deg, #FF7043, #F4511E);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .stat-trend {
+            font-size: 0.9em;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e8ecef;
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .full-width-chart {
+            grid-column: 1 / -1;
+        }
+        
+        .comparison-section {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .insights {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .insights h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .insights ul {
+            list-style: none;
+        }
+        
+        .insights li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .insights li:before {
+            content: '📊';
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Student Enrollment Demographics</h1>
+            <p class="subtitle">Comprehensive Analysis: Demographics, Trends & Programs (2018-2025)</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">1,402</div>
+                <div class="stat-label">Current Enrollment</div>
+                <div class="stat-trend">2025 School Year</div>
+            </div>
+            <div class="stat-card trend-up">
+                <div class="stat-number">+8.9%</div>
+                <div class="stat-label">7-Year Growth</div>
+                <div class="stat-trend">+115 students since 2018</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">38.5%</div>
+                <div class="stat-label">Black Students</div>
+                <div class="stat-trend">Largest demographic group</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12.5%</div>
+                <div class="stat-label">Special Education</div>
+                <div class="stat-trend">171 students (2024 FTE)</div>
+            </div>
+            <div class="stat-card trend-up">
+                <div class="stat-number">25.6%</div>
+                <div class="stat-label">Gifted Students</div>
+                <div class="stat-trend">351 students in program</div>
+            </div>
+            <div class="stat-card trend-up">
+                <div class="stat-number">46.3%</div>
+                <div class="stat-label">AP/Honors</div>
+                <div class="stat-trend">635 students enrolled</div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3 class="chart-title">Current Student Ethnicity (2025)<br><span style="font-size: 0.8em; color: #666;">(N = 1,402)</span></h3>
+                <div class="chart-container">
+                    <canvas id="currentEthnicityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Special Education by Grade (2024 FTE)<br><span style="font-size: 0.8em; color: #666;">(N = 1,371)</span></h3>
+                <div class="chart-container">
+                    <canvas id="spedByGradeChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Enrichment Programs (2024 FTE)<br><span style="font-size: 0.8em; color: #666;">(N = 1,371)</span></h3>
+                <div class="chart-container">
+                    <canvas id="enrichmentChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Staff vs Student Demographics<br><span style="font-size: 0.8em; color: #666;">Students (N = 1,402) vs Staff (N = 167)</span></h3>
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width-chart">
+                <h3 class="chart-title">Enrollment Trends by Ethnicity (2018-2025)<br><span style="font-size: 0.8em; color: #666;">(N = 1,287 to 1,402)</span></h3>
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width-chart">
+                <h3 class="chart-title">Demographic Percentage Changes Over Time<br><span style="font-size: 0.8em; color: #666;">(N = 1,287 to 1,402)</span></h3>
+                <div class="chart-container">
+                    <canvas id="percentageChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width-chart">
+                <h3 class="chart-title">Disability Categories by Grade Level (2024 FTE)<br><span style="font-size: 0.8em; color: #666;">(N = 1,371)</span></h3>
+                <div class="chart-container">
+                    <canvas id="disabilityCategoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-section">
+            <h3>🎯 Comprehensive Student Services & Staff Alignment</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Special Education Services</h4>
+                    <p><strong>Students Served:</strong> 171 (12.5%)</p>
+                    <p><strong>Staff:</strong> 25 interrelated teachers</p>
+                    <p><strong>Ratio:</strong> 1:6.8 teacher-to-student</p>
+                    <p><strong>Analysis:</strong> Excellent staffing ratio providing individualized support for diverse learning needs.</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Demographic Representation</h4>
+                    <p><strong>Black Students:</strong> 38.5% vs 61% staff</p>
+                    <p><strong>Hispanic Students:</strong> 17.2% vs 5.4% staff</p>
+                    <p><strong>Analysis:</strong> Strong Black representation; opportunity to increase Hispanic staff representation.</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Gifted & Advanced Programs</h4>
+                    <p><strong>Gifted:</strong> 351 students (25.6%)</p>
+                    <p><strong>AP/Honors:</strong> 635 students (46.3%)</p>
+                    <p><strong>Analysis:</strong> Exceptional academic rigor with nearly half of students in advanced coursework.</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Growth Trends</h4>
+                    <p><strong>7-Year Growth:</strong> +8.9% enrollment</p>
+                    <p><strong>Hispanic Growth:</strong> +2.4% since 2018</p>
+                    <p><strong>Analysis:</strong> Steady growth with increasing diversity reflects community confidence.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="insights">
+            <h3>Key Trends & Strategic Insights</h3>
+            <ul>
+                <li><strong>Comprehensive Excellence:</strong> 12.5% SPED + 25.6% Gifted + 46.3% AP/Honors shows commitment to serving all learners</li>
+                <li><strong>Demographic Evolution:</strong> Hispanic (+2.4%) and Asian (+2.4%) growth reflects changing community composition</li>
+                <li><strong>Staff Alignment Strengths:</strong> 1:6.8 SPED ratio and 61% Black staff provide excellent support and representation</li>
+                <li><strong>Academic Rigor:</strong> 635 students in AP/Honors demonstrates strong college preparation focus</li>
+                <li><strong>Growth Opportunity:</strong> Hispanic student population (17.2%) growing faster than staff representation (5.4%)</li>
+                <li><strong>Sustained Success:</strong> 8.9% enrollment growth over 7 years shows community confidence and school effectiveness</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Student enrollment data (2018-2025 trends)
+        const enrollmentData = [
+            {year: 2018, Black: 560, White: 410, Hispanic: 190, Asian: 90, Multiracial: 37, total: 1287},
+            {year: 2019, Black: 550, White: 420, Hispanic: 195, Asian: 95, Multiracial: 39, total: 1299},
+            {year: 2020, Black: 545, White: 425, Hispanic: 200, Asian: 100, Multiracial: 40, total: 1310},
+            {year: 2021, Black: 535, White: 435, Hispanic: 215, Asian: 120, Multiracial: 45, total: 1350},
+            {year: 2022, Black: 530, White: 444, Hispanic: 228, Asian: 136, Multiracial: 55, total: 1393},
+            {year: 2023, Black: 560, White: 444, Hispanic: 228, Asian: 130, Multiracial: 55, total: 1417},
+            {year: 2024, Black: 563, White: 442, Hispanic: 254, Asian: 132, Multiracial: 68, total: 1459},
+            {year: 2025, Black: 540, White: 426, Hispanic: 241, Asian: 132, Multiracial: 63, total: 1402}
+        ];
+
+        // Current year data
+        const currentYear = enrollmentData[enrollmentData.length - 1];
+        
+        // Current ethnicity percentages
+        const currentEthnicityData = {
+            'Black': 38.5,
+            'White': 30.4,
+            'Hispanic': 17.2,
+            'Asian': 9.4,
+            'Multiracial': 4.5
+        };
+
+        // Staff data for comparison
+        const staffEthnicityData = {
+            'Black': 61.0,
+            'White': 27.0,
+            'Hispanic': 5.4,
+            'Asian': 4.2
+        };
+
+        // 2024 FTE Program Data
+        const spedByGradeData = {
+            '9th Grade': 50,
+            '10th Grade': 44,
+            '11th Grade': 45,
+            '12th Grade': 32
+        };
+
+        const enrichmentData = {
+            'Gifted': 351,
+            'AP/Honors': 635,
+            'Dual Enrollment': 112
+        };
+
+        // Grade level data for disability categories
+        const gradeLevelDisabilityData = {
+            grades: ['9th', '10th', '11th', '12th'],
+            'Learning Disability': [25, 24, 21, 16],
+            'ADHD': [21, 17, 26, 11],
+            'Other': [26, 23, 11, 12],
+            'Emotional/Behavioral': [9, 1, 4, 9],
+            'Physical Disability': [4, 1, 4, 4]
+        };
+
+        // Color palette (matching staff dashboard)
+        const ethnicityColors = ['#8E24AA', '#1976D2', '#FF7043', '#4CAF50', '#FFC107'];
+        
+        // Current Student Ethnicity Chart
+        const currentCtx = document.getElementById('currentEthnicityChart').getContext('2d');
+        new Chart(currentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(currentEthnicityData),
+                datasets: [{
+                    data: Object.values(currentEthnicityData),
+                    backgroundColor: ethnicityColors,
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const actualCount = Math.round(currentYear.total * context.parsed / 100);
+                                return `${context.label}: ${context.parsed}% (n = ${actualCount})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Special Education by Grade Chart
+        const spedGradeCtx = document.getElementById('spedByGradeChart').getContext('2d');
+        new Chart(spedGradeCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(spedByGradeData),
+                datasets: [{
+                    label: 'Special Education Students',
+                    data: Object.values(spedByGradeData),
+                    backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Students'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const gradeTotal = [426, 342, 333, 270][context.dataIndex];
+                                const percentage = ((context.parsed.y / gradeTotal) * 100).toFixed(1);
+                                return `${context.parsed.y} students (${percentage}% of grade, n = ${gradeTotal})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Enrichment Programs Chart
+        const enrichmentCtx = document.getElementById('enrichmentChart').getContext('2d');
+        new Chart(enrichmentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(enrichmentData),
+                datasets: [{
+                    data: Object.values(enrichmentData),
+                    backgroundColor: ['#8E24AA', '#FF7043', '#4CAF50'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const percentage = ((context.parsed / 1371) * 100).toFixed(1);
+                                return `${context.label}: n = ${context.parsed} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Staff vs Student Comparison Chart
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Black', 'White', 'Hispanic', 'Asian'],
+                datasets: [{
+                    label: 'Students (%)',
+                    data: [38.5, 30.4, 17.2, 9.4],
+                    backgroundColor: '#4ECDC4',
+                    borderRadius: 5
+                }, {
+                    label: 'Staff (%)',
+                    data: [61.0, 27.0, 5.4, 4.2],
+                    backgroundColor: '#FF6B6B',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 70,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const yearData = enrollmentData[context.dataIndex];
+                                const actualCount = Math.round(yearData.total * context.parsed.y / 100);
+                                return `${context.dataset.label}: ${context.parsed.y}% (n = ${actualCount}, N = ${yearData.total})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Enrollment Trends Chart
+        const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+        new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: enrollmentData.map(d => d.year),
+                datasets: [
+                    {
+                        label: 'Black',
+                        data: enrollmentData.map(d => d.Black),
+                        borderColor: '#8E24AA',
+                        backgroundColor: '#8E24AA20',
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: 'White',
+                        data: enrollmentData.map(d => d.White),
+                        borderColor: '#1976D2',
+                        backgroundColor: '#1976D220',
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: 'Hispanic',
+                        data: enrollmentData.map(d => d.Hispanic),
+                        borderColor: '#FF7043',
+                        backgroundColor: '#FF704320',
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: 'Asian',
+                        data: enrollmentData.map(d => d.Asian),
+                        borderColor: '#4CAF50',
+                        backgroundColor: '#4CAF5020',
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: 'Multiracial',
+                        data: enrollmentData.map(d => d.Multiracial),
+                        borderColor: '#FFC107',
+                        backgroundColor: '#FFC10720',
+                        tension: 0.1,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Students'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // Percentage Changes Chart
+        const percentageCtx = document.getElementById('percentageChart').getContext('2d');
+        
+        // Calculate percentages for each year
+        const percentageData = enrollmentData.map(yearData => ({
+            year: yearData.year,
+            Black: (yearData.Black / yearData.total * 100),
+            White: (yearData.White / yearData.total * 100),
+            Hispanic: (yearData.Hispanic / yearData.total * 100),
+            Asian: (yearData.Asian / yearData.total * 100),
+            Multiracial: (yearData.Multiracial / yearData.total * 100)
+        }));
+
+        new Chart(percentageCtx, {
+            type: 'line',
+            data: {
+                labels: percentageData.map(d => d.year),
+                datasets: [
+                    {
+                        label: 'Black %',
+                        data: percentageData.map(d => d.Black.toFixed(1)),
+                        borderColor: '#8E24AA',
+                        backgroundColor: '#8E24AA20',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'White %',
+                        data: percentageData.map(d => d.White.toFixed(1)),
+                        borderColor: '#1976D2',
+                        backgroundColor: '#1976D220',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Hispanic %',
+                        data: percentageData.map(d => d.Hispanic.toFixed(1)),
+                        borderColor: '#FF7043',
+                        backgroundColor: '#FF704320',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Asian %',
+                        data: percentageData.map(d => d.Asian.toFixed(1)),
+                        borderColor: '#4CAF50',
+                        backgroundColor: '#4CAF5020',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Multiracial %',
+                        data: percentageData.map(d => d.Multiracial.toFixed(1)),
+                        borderColor: '#FFC107',
+                        backgroundColor: '#FFC10720',
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 50,
+                        title: {
+                            display: true,
+                            text: 'Percentage of Total Enrollment'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // Disability Category by Grade Chart
+        const disabilityCategoryCtx = document.getElementById('disabilityCategoryChart').getContext('2d');
+        new Chart(disabilityCategoryCtx, {
+            type: 'bar',
+            data: {
+                labels: gradeLevelDisabilityData.grades,
+                datasets: [
+                    {
+                        label: 'Learning Disability',
+                        data: gradeLevelDisabilityData['Learning Disability'],
+                        backgroundColor: '#8E24AA',
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'ADHD',
+                        data: gradeLevelDisabilityData['ADHD'],
+                        backgroundColor: '#FF7043',
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'Other',
+                        data: gradeLevelDisabilityData['Other'],
+                        backgroundColor: '#4CAF50',
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'Emotional/Behavioral',
+                        data: gradeLevelDisabilityData['Emotional/Behavioral'],
+                        backgroundColor: '#2196F3',
+                        borderRadius: 3
+                    },
+                    {
+                        label: 'Physical Disability',
+                        data: gradeLevelDisabilityData['Physical Disability'],
+                        backgroundColor: '#FFC107',
+                        borderRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Grade Level'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Students'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const gradeTotal = [426, 342, 333, 270][context.dataIndex];
+                                return `${context.dataset.label}: n = ${context.parsed.y} (N = ${gradeTotal})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

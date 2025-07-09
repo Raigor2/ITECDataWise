@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Staff Distribution Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e8ecef;
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .full-width-chart {
+            grid-column: 1 / -1;
+        }
+        
+        .insights {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .insights h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .insights ul {
+            list-style: none;
+        }
+        
+        .insights li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .insights li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>School Staff Distribution Dashboard</h1>
+            <p class="subtitle">Data-Driven Insights for Educational Leadership</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">167</div>
+                <div class="stat-label">Total Staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">133</div>
+                <div class="stat-label">Core Faculty</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">54.5%</div>
+                <div class="stat-label">Female Staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">61%</div>
+                <div class="stat-label">Black Staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Largest Dept</div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3 class="chart-title">Department Size Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <p style="font-size: 0.9em; color: #7f8c8d; text-align: center; margin-top: 10px;">
+                    *Based on 133 core faculty members. Additional 34 support staff (food service, SRO, custodians) not categorized by department.
+                </p>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Gender Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Staff Ethnicity Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="ethnicityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Academic vs Support Staff</h3>
+                <div class="chart-container">
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width-chart">
+                <h3 class="chart-title">Department Staffing Levels</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="insights">
+            <h3>Key Insights & Demographics Analysis</h3>
+            <ul>
+                <li><strong>Diversity Leadership:</strong> 73% of staff identify as Black or Latino, demonstrating strong representation for students of color</li>
+                <li><strong>Gender Balance:</strong> 54.5% female staff aligns with education sector trends and provides diverse role models</li>
+                <li><strong>Special Education Focus:</strong> 19% of core faculty (25 people) in interrelated special education indicates strong commitment to inclusive education</li>
+                <li><strong>Comprehensive Staffing:</strong> 167 total staff (133 core + 34 support) ensures robust student services and campus operations</li>
+                <li><strong>Balanced Core Academics:</strong> Similar staffing levels across Math, English, Social Studies, and World Languages shows curriculum balance</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Staff data
+        const departmentData = {
+            'Special Education': 25,
+            'Social Studies': 12,
+            'Mathematics': 12,
+            'English/ELA': 11,
+            'World Languages': 11,
+            'Science': 10,
+            'Admin Support': 7,
+            'Student Support': 6,
+            'Paraprofessionals': 6,
+            'Fine Arts': 5,
+            'Career/Tech Ed': 5,
+            'PE/Health': 5,
+            'Administration': 4,
+            'Counseling': 4,
+            'Maintenance': 3,
+            'Food Service': 2,
+            'ROTC': 2,
+            'Library': 1,
+            'Special Services': 1,
+            'Other': 1
+        };
+
+        // Gender data (for all 167 staff)
+        const genderData = {
+            'Female': 54.5,
+            'Male': 45.5
+        };
+
+        // Ethnicity data (for all 167 staff)
+        const ethnicityData = {
+            'Black': 61.0,
+            'White': 27.0,
+            'Latino': 5.4,
+            'Asian': 4.2,
+            'Other': 2.4  // Calculated to total 100%
+        };
+
+        // Color palette
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57',
+            '#FF9FF3', '#54A0FF', '#5F27CD', '#00D2D3', '#FF9F43',
+            '#3742FA', '#2F3542', '#FF3838', '#70A1FF', '#7BED9F',
+            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
+        ];
+
+        // Gender-specific colors
+        const genderColors = ['#E91E63', '#2196F3'];
+        
+        // Ethnicity-specific colors (using culturally sensitive, professional palette)
+        const ethnicityColors = ['#8E24AA', '#1976D2', '#FF7043', '#4CAF50', '#FFC107'];
+
+        // Gender Chart
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(genderData),
+                datasets: [{
+                    data: Object.values(genderData),
+                    backgroundColor: genderColors,
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Ethnicity Chart
+        const ethnicityCtx = document.getElementById('ethnicityChart').getContext('2d');
+        new Chart(ethnicityCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(ethnicityData),
+                datasets: [{
+                    label: 'Percentage',
+                    data: Object.values(ethnicityData),
+                    backgroundColor: ethnicityColors.map(color => color + '80'),
+                    borderColor: ethnicityColors,
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 70,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed.y}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart - Department Distribution
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(departmentData),
+                datasets: [{
+                    data: Object.values(departmentData),
+                    backgroundColor: colors,
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 12,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Doughnut Chart - Academic vs Support
+        const academicDepts = ['Social Studies', 'Mathematics', 'English/ELA', 'World Languages', 'Science', 'Fine Arts', 'Career/Tech Ed', 'PE/Health'];
+        const academicCount = academicDepts.reduce((sum, dept) => sum + (departmentData[dept] || 0), 0);
+        const supportCount = 133 - academicCount - 25; // Exclude Special Ed as it's both
+
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Core Academic', 'Special Education', 'Support Services'],
+                datasets: [{
+                    data: [academicCount, 25, supportCount],
+                    backgroundColor: ['#4ECDC4', '#FF6B6B', '#45B7D1'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const percentage = ((context.parsed / 133) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed} (${percentage}% of core faculty)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart - Department Staffing
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(departmentData),
+                datasets: [{
+                    label: 'Staff Count',
+                    data: Object.values(departmentData),
+                    backgroundColor: colors.map(color => color + '80'),
+                    borderColor: colors,
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const percentage = ((context.parsed.y / 133) * 100).toFixed(1);
+                                return `${context.parsed.y} staff (${percentage}% of total)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
