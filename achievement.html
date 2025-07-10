@@ -1,13 +1,13 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biology EOC Achievement Analysis - Druid Hills High School</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Biology EOC Achievement Analysis - Druid Hills High School</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -227,121 +227,289 @@
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="header">
-            <h1>Biology EOC Achievement Analysis</h1>
-            <p class="subtitle">Five-Year Longitudinal Study: Pre-Pandemic to Present (2019-2024)</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card trend-down">
-                <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 9v12H4V9l8-6 8 6zM6 19h12v-8.485l-6-4.5-6 4.5V19z"/></svg>
-                <div class="stat-number">38.4%</div>
-                <div class="stat-label">2019 Baseline</div>
-                <div class="stat-trend">Pre-pandemic performance</div>
-            </div>
-            <div class="stat-card warning">
-                <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M21 18H3a1 1 0 0 1 0-2h18a1 1 0 0 1 0 2zm-5-8.83V4a1 1 0 0 0-2 0v5.17a3.001 3.001 0 0 0-5 0V4a1 1 0 1 0-2 0v5.17a3.001 3.001 0 0 0-5 0v.66a1 1 0 0 0 1.555.832L8 9.17V14a1 1 0 1 0 2 0V9.17l1.445 1.156a1 1 0 0 0 1.11 0L14 9.17V14a1 1 0 0 0 2 0V9.17l1.445 1.156A1 1 0 0 0 19 9.83v-.66a3.001 3.001 0 0 0-3-2.97z"/></svg>
-                <div class="stat-number">55.6pts</div>
-                <div class="stat-label">Widening Gap</div>
-                <div class="stat-trend">White-Black Achievement</div>
-            </div>
-            <div class="stat-card trend-down">
-                <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                <div class="stat-number">7.7%</div>
-                <div class="stat-label">EL Crisis (2019)</div>
-                <div class="stat-trend">Persistent 5-year crisis</div>
-            </div>
-            <div class="stat-card">
-                <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 1L9 9h6l-3-8zM3 21h18v-2H3v2zm9-2l3-8H6l3 8zM2 17h20v-2H2v2z"/></svg>
-                <div class="stat-number">75.2%</div>
-                <div class="stat-label">White Students (2019)</div>
-                <div class="stat-trend">Consistent outlier performance</div>
-            </div>
-            <div class="stat-card warning">
-                 <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg>
-                <div class="stat-number">+7.8pts</div>
-                <div class="stat-label">Gap Growth</div>
-                <div class="stat-trend">Achievement gap worsened</div>
-            </div>
-            <div class="stat-card trend-up">
-                <svg class="stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M2.5 10.5L8 3l5.5 8.5H11v8h2v-8h2.5L21.5 10.5h-5l-4-6.5-4 6.5h-5z"/></svg>
-                <div class="stat-number">65.0%</div>
-                <div class="stat-label">2023 Peak</div>
-                <div class="stat-trend">Best overall performance</div>
-            </div>
-        </div>
-        
-        <div class="charts-container">
-            <div class="chart-card">
-                <h3 class="chart-title">Five-Year Achievement Trends by Ethnicity<br><span style="font-size: 0.8em; color: #666;">(2019-2024: Pre-Pandemic to Present)</span></h3>
-                <div class="chart-container">
-                    <canvas id="ethnicityTrendsChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-card">
-                <h3 class="chart-title">2024 Performance by Subgroup<br><span style="font-size: 0.8em; color: #666;">(Level 3 + Level 4 Proficient)</span></h3>
-                <div class="chart-container">
-                    <canvas id="subgroupPerformanceChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-card full-width-chart">
-                <h3 class="chart-title">The "High-Performing School" Illusion: Overall vs. Disaggregated Performance<br><span style="font-size: 0.8em; color: #666;">(Five-Year Trend Analysis)</span></h3>
-                <div class="chart-container">
-                    <canvas id="illusionChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-card full-width-chart">
-                <h3 class="chart-title">CCRPI Score Trends: The Persistence of Inequality<br><span style="font-size: 0.8em; color: #666;">(2019-2024)</span></h3>
-                <div class="chart-container">
-                    <canvas id="ccrpiTrendsChart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <div class="achievement-gaps">
-            <h3>🚨 Critical Finding: "High-Performing School" Status Masks Systematic Equity Crisis</h3>
-            <div class="gaps-grid">
-                <div class="gap-card">
-                    <h3>📈 Widening Racial Gap</h3>
-                    <div class="gap-stat">+7.8 points</div>
-                    <div class="gap-description">White-Black achievement gap WORSENED from 47.8 points (2019) to 55.6 points (2024), proving persistent institutional inequity.</div>
-                </div>
-                <div class="gap-card">
-                    <h3>🎭 Performance Illusion</h3>
-                    <div class="gap-stat">75.2% vs 27.4%</div>
-                    <div class="gap-description">2019 data proves White students (75.2%) consistently function as outliers, masking majority student underperformance.</div>
-                </div>
-                <div class="gap-card">
-                    <h3>📚 5-Year EL Crisis</h3>
-                    <div class="gap-stat">7.7% → 11.1%</div>
-                    <div class="gap-description">English Learners remain in academic crisis across 5 years, with minimal improvement despite interventions.</div>
-                </div>
-                <div class="gap-card">
-                    <h3>♿ Disability Decline</h3>
-                    <div class="gap-stat">11.9% → 14.9%</div>
-                    <div class="gap-description">Students with Disabilities show minimal 5-year gains, then dramatic 2024 decline suggests systemic support failures.</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="insights">
-            <h3>Critical Findings: Five-Year Longitudinal Analysis</h3>
-            <ul>
-                <li><strong>Pre-Pandemic Crisis:</strong> 2019 baseline (38.4% proficient) proves achievement gaps existed before COVID, indicating systemic institutional issues.</li>
-                <li><strong>Outlier Effect Documented:</strong> White students consistently perform 45-55 points higher, artificially inflating "school performance" metrics.</li>
-                <li><strong>Persistent EL Emergency:</strong> English Learners trapped in crisis (7.7% to 11.1%) across five years with no meaningful improvement.</li>
-                <li><strong>Worsening Equity:</strong> White-Black achievement gap widened 7.8 points over 5 years despite school improvement efforts.</li>
-                <li><strong>"High-Performing" Myth:</strong> Disaggregated data reveals majority of students underperform while aggregate metrics suggest success.</li>
-                <li><strong>Intervention Failure:</strong> Five-year trends prove current strategies inadequate for closing persistent achievement gaps.</li>
-            </ul>
-        </div>
-    </div>
+<div class="dashboard">
+<div class="header">
+<h1>Biology EOC Achievement Analysis</h1>
+<p class="subtitle">Five-Year Longitudinal Study: Pre-Pandemic to Present (2019-2024)</p>
+</div>
+<div class="stats-grid">
+<div class="stat-card trend-down">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 9v12H4V9l8-6 8 6zM6 19h12v-8.485l-6-4.5-6 4.5V19z"></path></svg>
+<div class="stat-number">38.4%</div>
+<div class="stat-label">2019 Baseline</div>
+<div class="stat-trend">Pre-pandemic performance</div>
+</div>
+<div class="stat-card warning">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 18H3a1 1 0 0 1 0-2h18a1 1 0 0 1 0 2zm-5-8.83V4a1 1 0 0 0-2 0v5.17a3.001 3.001 0 0 0-5 0V4a1 1 0 1 0-2 0v5.17a3.001 3.001 0 0 0-5 0v.66a1 1 0 0 0 1.555.832L8 9.17V14a1 1 0 1 0 2 0V9.17l1.445 1.156a1 1 0 0 0 1.11 0L14 9.17V14a1 1 0 0 0 2 0V9.17l1.445 1.156A1 1 0 0 0 19 9.83v-.66a3.001 3.001 0 0 0-3-2.97z"></path></svg>
+<div class="stat-number">55.6pts</div>
+<div class="stat-label">Widening Gap</div>
+<div class="stat-trend">White-Black Achievement</div>
+</div>
+<div class="stat-card trend-down">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
+<div class="stat-number">7.7%</div>
+<div class="stat-label">EL Crisis (2019)</div>
+<div class="stat-trend">Persistent 5-year crisis</div>
+</div>
+<div class="stat-card">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L9 9h6l-3-8zM3 21h18v-2H3v2zm9-2l3-8H6l3 8zM2 17h20v-2H2v2z"></path></svg>
+<div class="stat-number">75.2%</div>
+<div class="stat-label">White Students (2019)</div>
+<div class="stat-trend">Consistent outlier performance</div>
+</div>
+<div class="stat-card warning">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"></path></svg>
+<div class="stat-number">+7.8pts</div>
+<div class="stat-label">Gap Growth</div>
+<div class="stat-trend">Achievement gap worsened</div>
+</div>
+<div class="stat-card trend-up">
+<svg class="stat-icon" fill="white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 10.5L8 3l5.5 8.5H11v8h2v-8h2.5L21.5 10.5h-5l-4-6.5-4 6.5h-5z"></path></svg>
+<div class="stat-number">65.0%</div>
+<div class="stat-label">2023 Peak</div>
+<div class="stat-trend">Best overall performance</div>
+</div>
+</div>
+<div class="charts-container">
+<div class="chart-card">
+<h3 class="chart-title">Five-Year Achievement Trends by Ethnicity<br/><span style="font-size: 0.8em; color: #666;">(2020–2024: Post-Pandemic to Present) • N = 478 Biology EOC test-takers (Grades 9–10)</span></h3>
+<div class="chart-container">
+<canvas id="ethnicityTrendsChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<h3 class="chart-title">2024 Performance by Subgroup<br/><span style="font-size: 0.8em; color: #666;">(Level 3 + Level 4 Proficient) • N = 171 Biology EOC test-takers (Grades 9–10)</span></h3>
+<div class="chart-container">
+<canvas id="subgroupPerformanceChart"></canvas>
+</div>
+</div>
+<div class="chart-card full-width-chart">
+<h3 class="chart-title">The "High-Performing School" Illusion: Overall vs. Disaggregated Performance<br/><span style="font-size: 0.8em; color: #666;">(2021–2024 Trend Analysis) • N ≈ 661 Biology EOC test-takers (Grades 9–10)</span></h3>
+<div class="chart-container">
+<canvas id="illusionChart"></canvas>
+</div>
+</div>
+<div class="chart-card full-width-chart">
+<h3 class="chart-title">CCRPI Score Trends: The Persistence of Inequality<br/><span style="font-size: 0.8em; color: #666;">(2021–2024) • N ≈ 661 Biology EOC test-takers (Grades 9–10)</span></h3>
+<div class="chart-container">
+<canvas id="ccrpiTrendsChart"></canvas>
+</div>
+</div>
+</div>
+<div class="achievement-gaps">
+<h3>🚨 Critical Finding: "High-Performing School" Status Masks Systematic Equity Crisis</h3>
+<div class="gaps-grid">
+<div class="gap-card">
+<h3>📈 Widening Racial Gap</h3>
+<div class="gap-stat">+7.8 points</div>
+<div class="gap-description">White-Black achievement gap WORSENED from 47.8 points (2019) to 55.6 points (2024), proving persistent institutional inequity.</div>
+</div>
+<div class="gap-card">
+<h3>🎭 Performance Illusion</h3>
+<div class="gap-stat">75.2% vs 27.4%</div>
+<div class="gap-description">2019 data proves White students (75.2%) consistently function as outliers, masking majority student underperformance.</div>
+</div>
+<div class="gap-card">
+<h3>📚 5-Year EL Crisis</h3>
+<div class="gap-stat">7.7% → 11.1%</div>
+<div class="gap-description">English Learners remain in academic crisis across 5 years, with minimal improvement despite interventions.</div>
+</div>
+<div class="gap-card">
+<h3>♿ Disability Decline</h3>
+<div class="gap-stat">11.9% → 14.9%</div>
+<div class="gap-description">Students with Disabilities show minimal 5-year gains, then dramatic 2024 decline suggests systemic support failures.</div>
+</div>
+</div>
+</div>
+<div class="insights">
+<h3>Critical Findings: Five-Year Longitudinal Analysis</h3>
+<ul>
+<li><strong>Pre-Pandemic Crisis:</strong> 2019 baseline (38.4% proficient) proves achievement gaps existed before COVID, indicating systemic institutional issues.</li>
+<li><strong>Outlier Effect Documented:</strong> White students consistently perform 45-55 points higher, artificially inflating "school performance" metrics.</li>
+<li><strong>Persistent EL Emergency:</strong> English Learners trapped in crisis (7.7% to 11.1%) across five years with no meaningful improvement.</li>
+<li><strong>Worsening Equity:</strong> White-Black achievement gap widened 7.8 points over 5 years despite school improvement efforts.</li>
+<li><strong>"High-Performing" Myth:</strong> Disaggregated data reveals majority of students underperform while aggregate metrics suggest success.</li>
+<li><strong>Intervention Failure:</strong> Five-year trends prove current strategies inadequate for closing persistent achievement gaps.</li>
+</ul>
+</div>
+<section id="achievement-comparison">
+<h3 class="chart-title">Biology EOC Achievement Level Distribution (2021–2024)</h3>
+<div style="margin-bottom: 10px;">
+<label><input checked="" id="toggleState" type="checkbox"/> Show State</label>
+<label><input checked="" id="toggleCounty" type="checkbox"/> Show County</label>
+<label><input checked="" id="toggleSchool" type="checkbox"/> Show School</label>
+<button id="resetButton" style="margin-left: 20px; font-size: 14px;">🔄 Reset Chart</button></div>
+<canvas height="600" id="comparisonChart" width="1200"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script>
+const ctx = document.getElementById('comparisonChart').getContext('2d');
 
-    <script>
+const labels = [
+    "2021 - State", "2021 - County", "2021 - School",
+    "2022 - State", "2022 - County", "2022 - School",
+    "2023 - State", "2023 - County", "2023 - School",
+    "2024 - State", "2024 - County", "2024 - School"
+];
+
+const nCounts = [
+    31843, 2417, 183,
+    35451, 2793, 125,
+    35300, 2638, 182,
+    35256, 2638, 171
+];
+
+const datasets = [
+    {
+        label: "Beginning",
+        backgroundColor: "#f8c7b0",
+        data: [33, 47, 30, 35, 49, 18, 34, 44, 27, 35, 44, 23],
+        group: ["State", "County", "School","State", "County", "School","State", "County", "School","State", "County", "School"],
+        stack: "combined"
+    },
+    {
+        label: "Developing",
+        backgroundColor: "#f9ecb2",
+        data: [26, 24, 20, 25, 24, 14, 27, 26, 27, 27, 26, 22],
+        group: ["State", "County", "School","State", "County", "School","State", "County", "School","State", "County", "School"],
+        stack: "combined"
+    },
+    {
+        label: "Proficient",
+        backgroundColor: "#b8e7c5",
+        data: [33, 23, 39, 31, 20, 41, 29, 24, 31, 30, 24, 43],
+        group: ["State", "County", "School","State", "County", "School","State", "County", "School","State", "County", "School"],
+        stack: "combined"
+    },
+    {
+        label: "Distinguished",
+        backgroundColor: "#c7d9f1",
+        data: [9, 7, 11, 9, 7, 28, 10, 5, 14, 8, 5, 12],
+        group: ["State", "County", "School","State", "County", "School","State", "County", "School","State", "County", "School"],
+        stack: "combined"
+    }
+];
+
+const config = {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: datasets
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false
+            },
+            datalabels: {
+                color: '#000',
+                anchor: 'center',
+                align: 'center',
+                formatter: value => value + '%',
+                font: {
+                    weight: 'bold',
+                    size: 10
+                }
+            }
+        },
+        interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+        },
+        scales: {
+            x: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Year and Group'
+                }
+            },
+            y: {
+                stacked: true,
+                max: 110,
+                title: {
+                    display: true,
+                    text: 'Percentage of Students'
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels, {
+        id: 'nLabelPlugin',
+        afterDatasetsDraw(chart) {
+            const {ctx} = chart;
+            const count = chart.data.labels.length;
+            const meta = chart.getDatasetMeta(chart.data.datasets.length - 1);
+            for (let i = 0; i < count; i++) {
+                const bar = meta.data[i];
+                if (bar) {
+                    ctx.save();
+                    ctx.font = "italic 10px sans-serif";
+                    ctx.fillStyle = "gray";
+                    ctx.textAlign = "center";
+                    ctx.fillText("N=" + nCounts[i], bar.x, bar.y - 8);
+                    ctx.restore();
+                }
+            }
+        }
+    }]
+};
+
+const chart = new Chart(ctx, config);
+
+function updateVisibility() {
+    const showState = document.getElementById('toggleState').checked;
+    const showCounty = document.getElementById('toggleCounty').checked;
+    const showSchool = document.getElementById('toggleSchool').checked;
+
+    chart.data.datasets.forEach((ds, idx) => {
+        ds.data = ds.data.map((val, i) => {
+            const label = ds.group[i];
+            if (label === "State" && !showState) return null;
+            if (label === "County" && !showCounty) return null;
+            if (label === "School" && !showSchool) return null;
+            return val;
+        });
+    });
+    chart.update();
+}
+
+document.getElementById('toggleState').addEventListener('change', updateVisibility);
+document.getElementById('toggleCounty').addEventListener('change', updateVisibility);
+document.getElementById('toggleSchool').addEventListener('change', updateVisibility);
+</script>
+<script>
+    const originalData = {
+        "Beginning": [33, 47, 30, 35, 49, 18, 34, 44, 27, 35, 44, 23],
+        "Developing": [26, 24, 20, 25, 24, 14, 27, 26, 27, 27, 26, 22],
+        "Proficient": [33, 23, 39, 31, 20, 41, 29, 24, 31, 30, 24, 43],
+        "Distinguished": [9, 7, 11, 9, 7, 28, 10, 5, 14, 8, 5, 12]
+    };
+
+    document.getElementById('resetButton').addEventListener('click', () => {
+        document.getElementById('toggleState').checked = true;
+        document.getElementById('toggleCounty').checked = true;
+        document.getElementById('toggleSchool').checked = true;
+
+        chart.data.datasets.forEach((ds) => {
+            const group = ds.label;
+            const band = group;
+            const values = originalData[band];
+            if (values) {
+                ds.data = values.slice();
+            }
+        });
+
+        chart.update();
+    });
+    </script></section></div>
+<script>
         // --- DATA INITIALIZATION ---
         // Data is pre-calculated from source CSVs.
         // Proficiency Rate = Level 3 (%) + Level 4 (%).
